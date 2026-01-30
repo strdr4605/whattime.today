@@ -1,4 +1,4 @@
-import { forwardRef, useRef } from 'react'
+import { forwardRef } from 'react'
 
 type Props = {
   hourLabel: string
@@ -10,32 +10,15 @@ type Props = {
 
 export const SlotButton = forwardRef<HTMLButtonElement, Props>(
   ({ hourLabel, selected, isDragging, onToggle, onTouchStart }, ref) => {
-    const touchMoved = useRef(false)
-
-    const handleTouchStart = () => {
-      touchMoved.current = false
-      onTouchStart?.()
-    }
-
-    const handleTouchMove = () => {
-      touchMoved.current = true
-    }
-
-    const handleTouchEnd = (e: React.TouchEvent) => {
-      if (!touchMoved.current) {
-        e.preventDefault()
-        onToggle()
-      }
-    }
-
     return (
       <button
         ref={ref}
         type="button"
         onClick={onToggle}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        onTouchStart={(e) => {
+          e.stopPropagation()
+          onTouchStart?.()
+        }}
         className={`
           px-3 py-2 rounded-lg text-sm font-medium transition-colors
           ${selected

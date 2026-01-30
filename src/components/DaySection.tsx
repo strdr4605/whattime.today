@@ -45,7 +45,7 @@ export function DaySection({ weekday, date, selectedSlots, onToggle, onSelect, i
     <div className={`space-y-2 p-3 -mx-3 rounded-lg ${bgClass}`}>
       <h3 className="font-medium text-gray-900 dark:text-gray-100">{label}</h3>
       <div
-        className="flex flex-wrap gap-2 select-none touch-none"
+        className="flex flex-wrap gap-2 select-none"
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         onTouchCancel={handleTouchEnd}
