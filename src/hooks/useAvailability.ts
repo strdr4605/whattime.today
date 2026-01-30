@@ -1,15 +1,50 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import type { Mode, SlotKey, TimeFormat } from '../types'
 import { getMonday, addDays } from '../utils/dateUtils'
 import { getUserTimezone, getUserTimeFormat } from '../utils/timezoneUtils'
 
+const STORAGE_KEY = 'wtt-state'
+
+type PersistedState = {
+  mode: Mode
+  timeFormat: TimeFormat
+  targetTimezone: string
+  selectedSlots: SlotKey[]
+}
+
+function loadState(): Partial<PersistedState> {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    return stored ? JSON.parse(stored) : {}
+  } catch {
+    return {}
+  }
+}
+
+function saveState(state: PersistedState) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+  } catch {
+    // ignore
+  }
+}
+
 export function useAvailability() {
-  const [mode, setMode] = useState<Mode>('week')
-  const [timeFormat, setTimeFormat] = useState<TimeFormat>(() => getUserTimeFormat())
+  const [mode, setMode] = useState<Mode>(() => loadState().mode ?? 'week')
+  const [timeFormat, setTimeFormat] = useState<TimeFormat>(() => loadState().timeFormat ?? getUserTimeFormat())
   const [weekStart, setWeekStart] = useState(() => getMonday(new Date()))
-  const [selectedSlots, setSelectedSlots] = useState<Set<SlotKey>>(new Set())
+  const [selectedSlots, setSelectedSlots] = useState<Set<SlotKey>>(() => new Set(loadState().selectedSlots ?? []))
   const [localTimezone] = useState(() => getUserTimezone())
-  const [targetTimezone, setTargetTimezone] = useState(() => getUserTimezone())
+  const [targetTimezone, setTargetTimezone] = useState(() => loadState().targetTimezone ?? getUserTimezone())
+
+  useEffect(() => {
+    saveState({
+      mode,
+      timeFormat,
+      targetTimezone,
+      selectedSlots: Array.from(selectedSlots),
+    })
+  }, [mode, timeFormat, targetTimezone, selectedSlots])
 
   const toggleSlot = useCallback((key: SlotKey) => {
     setSelectedSlots((prev) => {
