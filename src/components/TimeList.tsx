@@ -1,4 +1,4 @@
-import type { Mode, SlotKey, TimeFormat } from '../types'
+import type { Mode, SlotKey, TimeFormat, Locale } from '../types'
 import { WEEKDAYS } from '../types'
 import { getWeekDates } from '../utils/dateUtils'
 import { DaySection } from './DaySection'
@@ -10,9 +10,10 @@ type Props = {
   onToggle: (key: SlotKey) => void
   onSelect: (keys: SlotKey[]) => void
   timeFormat: TimeFormat
+  locale: Locale
 }
 
-export function TimeList({ mode, weekStart, selectedSlots, onToggle, onSelect, timeFormat }: Props) {
+export function TimeList({ mode, weekStart, selectedSlots, onToggle, onSelect, timeFormat, locale }: Props) {
   const weekDates = mode === 'week' ? getWeekDates(weekStart) : undefined
   const today = new Date()
   today.setHours(0, 0, 0, 0)
@@ -36,6 +37,7 @@ export function TimeList({ mode, weekStart, selectedSlots, onToggle, onSelect, t
           onSelect={onSelect}
           isToday={mode === 'week' && isToday(weekDates?.[idx])}
           timeFormat={timeFormat}
+          locale={locale}
         />
       ))}
     </div>

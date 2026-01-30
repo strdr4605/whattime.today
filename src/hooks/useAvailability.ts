@@ -1,7 +1,8 @@
 import { useState, useCallback, useEffect } from 'react'
-import type { Mode, SlotKey, TimeFormat } from '../types'
+import type { Mode, SlotKey, TimeFormat, Locale } from '../types'
 import { getMonday, addDays } from '../utils/dateUtils'
 import { getUserTimezone, getUserTimeFormat } from '../utils/timezoneUtils'
+import { getUserLocale } from './useLocale'
 
 const STORAGE_KEY = 'wtt-state'
 
@@ -10,6 +11,7 @@ type PersistedState = {
   timeFormat: TimeFormat
   targetTimezone: string
   selectedSlots: SlotKey[]
+  locale: Locale
 }
 
 function loadState(): Partial<PersistedState> {
@@ -36,6 +38,7 @@ export function useAvailability() {
   const [selectedSlots, setSelectedSlots] = useState<Set<SlotKey>>(() => new Set(loadState().selectedSlots ?? []))
   const [localTimezone] = useState(() => getUserTimezone())
   const [targetTimezone, setTargetTimezone] = useState(() => loadState().targetTimezone ?? getUserTimezone())
+  const [locale, setLocale] = useState<Locale>(() => loadState().locale ?? getUserLocale())
 
   useEffect(() => {
     saveState({
@@ -43,8 +46,9 @@ export function useAvailability() {
       timeFormat,
       targetTimezone,
       selectedSlots: Array.from(selectedSlots),
+      locale,
     })
-  }, [mode, timeFormat, targetTimezone, selectedSlots])
+  }, [mode, timeFormat, targetTimezone, selectedSlots, locale])
 
   const toggleSlot = useCallback((key: SlotKey) => {
     setSelectedSlots((prev) => {
@@ -98,5 +102,7 @@ export function useAvailability() {
     localTimezone,
     targetTimezone,
     setTargetTimezone,
+    locale,
+    setLocale,
   }
 }

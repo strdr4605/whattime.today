@@ -2,6 +2,14 @@ export type Mode = 'week' | 'generic'
 
 export type TimeFormat = '12h' | '24h'
 
+export type Locale = 'en' | 'ro' | 'ru'
+
+export const LOCALES: { code: Locale; label: string }[] = [
+  { code: 'en', label: 'EN' },
+  { code: 'ro', label: 'RO' },
+  { code: 'ru', label: 'RU' },
+]
+
 export type WeekDay =
   | 'monday'
   | 'tuesday'

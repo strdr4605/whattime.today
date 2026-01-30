@@ -1,0 +1,14 @@
+{
+  "app.title": "WTT",
+  "app.subtitle": "What Time Today",
+  "mode.week": "Saptamana",
+  "mode.generic": "Generic",
+  "nav.today": "Azi",
+  "nav.back": "Inapoi",
+  "nav.next": "Inainte",
+  "action.copy": "Copiaza",
+  "action.clear": "Sterge",
+  "action.clearConfirm": "Stergi {count} sloturi?",
+  "output.prefix": "Sunt disponibil:",
+  "copied": "Copiat!"
+}

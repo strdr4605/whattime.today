@@ -1,4 +1,4 @@
-import type { WeekDay, Hour, SlotKey, TimeFormat } from '../types'
+import type { WeekDay, Hour, SlotKey, TimeFormat, Locale } from '../types'
 import { HOURS, makeSlotKey } from '../types'
 import { useLocale } from '../hooks/useLocale'
 import { useTouchDragSelect } from '../hooks/useTouchDragSelect'
@@ -12,10 +12,11 @@ type Props = {
   onSelect: (keys: SlotKey[]) => void
   isToday?: boolean
   timeFormat: TimeFormat
+  locale: Locale
 }
 
-export function DaySection({ weekday, date, selectedSlots, onToggle, onSelect, isToday, timeFormat }: Props) {
-  const { formatWeekday, formatDate, formatHour } = useLocale(timeFormat)
+export function DaySection({ weekday, date, selectedSlots, onToggle, onSelect, isToday, timeFormat, locale }: Props) {
+  const { formatWeekday, formatDate, formatHour } = useLocale(timeFormat, locale)
   const isWeekend = weekday === 'saturday' || weekday === 'sunday'
 
   const {

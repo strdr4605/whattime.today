@@ -3,6 +3,7 @@ import { useAvailability } from './hooks/useAvailability'
 import { ModeToggle } from './components/ModeToggle'
 import { TimeFormatToggle } from './components/TimeFormatToggle'
 import { TimezoneSelect } from './components/TimezoneSelect'
+import { LocaleSelect } from './components/LocaleSelect'
 import { SettingsMenu } from './components/SettingsMenu'
 import { WeekNav } from './components/WeekNav'
 import { TimeList } from './components/TimeList'
@@ -26,9 +27,11 @@ function App() {
     localTimezone,
     targetTimezone,
     setTargetTimezone,
+    locale,
+    setLocale,
   } = useAvailability()
 
-  const { t } = useLocale(timeFormat)
+  const { t } = useLocale(timeFormat, locale)
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 pb-20">
@@ -50,6 +53,8 @@ function App() {
                 onTimeFormatChange={setTimeFormat}
                 mode={mode}
                 onModeChange={setMode}
+                locale={locale}
+                onLocaleChange={setLocale}
               />
             </div>
             <div className="hidden md:flex gap-2">
@@ -60,6 +65,7 @@ function App() {
               />
               <TimeFormatToggle timeFormat={timeFormat} onChange={setTimeFormat} />
               <ModeToggle mode={mode} onChange={setMode} />
+              <LocaleSelect locale={locale} onChange={setLocale} />
             </div>
           </div>
           {mode === 'week' && (
@@ -82,6 +88,7 @@ function App() {
             onToggle={toggleSlot}
             onSelect={selectSlots}
             timeFormat={timeFormat}
+            locale={locale}
           />
         </div>
         <div className="hidden md:block">
@@ -92,6 +99,7 @@ function App() {
             onToggle={toggleSlot}
             onSelect={selectSlots}
             timeFormat={timeFormat}
+            locale={locale}
           />
         </div>
       </main>
@@ -104,6 +112,7 @@ function App() {
         timeFormat={timeFormat}
         localTimezone={localTimezone}
         targetTimezone={targetTimezone}
+        locale={locale}
       />
     </div>
   )

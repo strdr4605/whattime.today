@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
-import type { Mode, TimeFormat } from '../types'
+import type { Mode, TimeFormat, Locale } from '../types'
 import { TimezoneSelect } from './TimezoneSelect'
 import { TimeFormatToggle } from './TimeFormatToggle'
 import { ModeToggle } from './ModeToggle'
+import { LocaleSelect } from './LocaleSelect'
 
 type Props = {
   localTimezone: string
@@ -12,6 +13,8 @@ type Props = {
   onTimeFormatChange: (format: TimeFormat) => void
   mode: Mode
   onModeChange: (mode: Mode) => void
+  locale: Locale
+  onLocaleChange: (locale: Locale) => void
 }
 
 export function SettingsMenu({
@@ -22,6 +25,8 @@ export function SettingsMenu({
   onTimeFormatChange,
   mode,
   onModeChange,
+  locale,
+  onLocaleChange,
 }: Props) {
   const [open, setOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -78,6 +83,10 @@ export function SettingsMenu({
           <div className="flex items-center justify-between gap-4">
             <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">View</label>
             <ModeToggle mode={mode} onChange={onModeChange} />
+          </div>
+          <div className="flex items-center justify-between gap-4">
+            <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">Language</label>
+            <LocaleSelect locale={locale} onChange={onLocaleChange} />
           </div>
         </div>
       )}

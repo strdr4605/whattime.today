@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import type { Mode, SlotKey, WeekDay, Hour, TimeFormat } from '../types'
+import type { Mode, SlotKey, WeekDay, Hour, TimeFormat, Locale } from '../types'
 import { WEEKDAYS, HOURS, makeSlotKey } from '../types'
 import { getWeekDates } from '../utils/dateUtils'
 import { useLocale } from '../hooks/useLocale'
@@ -11,10 +11,11 @@ type Props = {
   onToggle: (key: SlotKey) => void
   onSelect: (keys: SlotKey[]) => void
   timeFormat: TimeFormat
+  locale: Locale
 }
 
-export function TimeGrid({ mode, weekStart, selectedSlots, onToggle, onSelect, timeFormat }: Props) {
-  const { formatWeekday, formatDate, formatHour } = useLocale(timeFormat)
+export function TimeGrid({ mode, weekStart, selectedSlots, onToggle, onSelect, timeFormat, locale }: Props) {
+  const { formatWeekday, formatDate, formatHour } = useLocale(timeFormat, locale)
   const weekDates = mode === 'week' ? getWeekDates(weekStart) : undefined
 
   const today = new Date()

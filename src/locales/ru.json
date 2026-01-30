@@ -1,0 +1,14 @@
+{
+  "app.title": "WTT",
+  "app.subtitle": "What Time Today",
+  "mode.week": "Неделя",
+  "mode.generic": "Общий",
+  "nav.today": "Сегодня",
+  "nav.back": "Назад",
+  "nav.next": "Вперед",
+  "action.copy": "Копировать",
+  "action.clear": "Очистить",
+  "action.clearConfirm": "Очистить {count} слотов?",
+  "output.prefix": "Я доступен:",
+  "copied": "Скопировано!"
+}

@@ -1,14 +1,18 @@
 import { useMemo } from 'react'
 import en from '../locales/en.json'
-import type { WeekDay, Hour, TimeFormat } from '../types'
+import ro from '../locales/ro.json'
+import ru from '../locales/ru.json'
+import type { WeekDay, Hour, TimeFormat, Locale } from '../types'
 
 type TranslationKey = keyof typeof en
 
-export function useLocale(timeFormat: TimeFormat = '12h') {
-  const locale = navigator.language
+const translations: Record<Locale, typeof en> = { en, ro, ru }
+
+export function useLocale(timeFormat: TimeFormat = '12h', locale: Locale = 'en') {
+  const messages = translations[locale]
 
   const t = (key: TranslationKey, params?: Record<string, string | number>): string => {
-    let text = en[key] || key
+    let text = messages[key] || en[key] || key
     if (params) {
       Object.entries(params).forEach(([k, v]) => {
         text = text.replace(`{${k}}`, String(v))
@@ -33,7 +37,8 @@ export function useLocale(timeFormat: TimeFormat = '12h') {
   const formatWeekday = (weekday: WeekDay, format: 'short' | 'long' = 'short'): string => {
     const dayIndex = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].indexOf(weekday)
     const date = new Date(2024, 0, 1 + dayIndex) // Jan 1, 2024 was Monday
-    return format === 'short' ? formatters.weekdayShort.format(date) : formatters.weekdayLong.format(date)
+    const formatted = format === 'short' ? formatters.weekdayShort.format(date) : formatters.weekdayLong.format(date)
+    return formatted.charAt(0).toUpperCase() + formatted.slice(1)
   }
 
   const formatHour = (hour: Hour): string => {
@@ -45,4 +50,11 @@ export function useLocale(timeFormat: TimeFormat = '12h') {
   }
 
   return { t, formatDate, formatWeekday, formatHour, locale }
+}
+
+export function getUserLocale(): Locale {
+  const lang = navigator.language.split('-')[0]
+  if (lang === 'ro') return 'ro'
+  if (lang === 'ru') return 'ru'
+  return 'en'
 }
