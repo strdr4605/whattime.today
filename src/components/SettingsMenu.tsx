@@ -4,6 +4,7 @@ import { TimezoneSelect } from './TimezoneSelect'
 import { TimeFormatToggle } from './TimeFormatToggle'
 import { ModeToggle } from './ModeToggle'
 import { LocaleSelect } from './LocaleSelect'
+import { AboutModal } from './AboutModal'
 
 type Props = {
   localTimezone: string
@@ -29,6 +30,7 @@ export function SettingsMenu({
   onLocaleChange,
 }: Props) {
   const [open, setOpen] = useState(false)
+  const [aboutOpen, setAboutOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -88,8 +90,18 @@ export function SettingsMenu({
             <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">Language</label>
             <LocaleSelect locale={locale} onChange={onLocaleChange} />
           </div>
+          <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+            <button
+              type="button"
+              onClick={() => { setAboutOpen(true); setOpen(false) }}
+              className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+            >
+              About
+            </button>
+          </div>
         </div>
       )}
+      <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
     </div>
   )
 }

@@ -4,6 +4,7 @@ import { ModeToggle } from './components/ModeToggle'
 import { TimeFormatToggle } from './components/TimeFormatToggle'
 import { TimezoneSelect } from './components/TimezoneSelect'
 import { LocaleSelect } from './components/LocaleSelect'
+import { AboutButton } from './components/AboutButton'
 import { SettingsMenu } from './components/SettingsMenu'
 import { WeekNav } from './components/WeekNav'
 import { TimeList } from './components/TimeList'
@@ -66,6 +67,7 @@ function App() {
               <TimeFormatToggle timeFormat={timeFormat} onChange={setTimeFormat} />
               <ModeToggle mode={mode} onChange={setMode} />
               <LocaleSelect locale={locale} onChange={setLocale} />
+              <AboutButton />
             </div>
           </div>
           {mode === 'week' && (
