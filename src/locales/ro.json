@@ -8,7 +8,9 @@
   "nav.next": "Inainte",
   "action.copy": "Copiaza",
   "action.clear": "Sterge",
-  "action.clearConfirm": "Stergi {count} sloturi?",
+  "action.clearConfirm": "Stergi {count}?",
+  "slots.selected": "{count} sloturi selectate",
+  "slots.selectedOne": "1 slot selectat",
   "output.prefix": "Sunt disponibil:",
   "copied": "Copiat!"
 }

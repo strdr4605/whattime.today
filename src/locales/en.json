@@ -8,7 +8,9 @@
   "nav.next": "Next",
   "action.copy": "Copy",
   "action.clear": "Clear",
-  "action.clearConfirm": "Clear {count} slots?",
+  "action.clearConfirm": "Clear {count}?",
+  "slots.selected": "{count} slots selected",
+  "slots.selectedOne": "1 slot selected",
   "output.prefix": "I'm available:",
   "copied": "Copied!"
 }

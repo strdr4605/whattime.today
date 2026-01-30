@@ -8,7 +8,9 @@
   "nav.next": "Вперед",
   "action.copy": "Копировать",
   "action.clear": "Очистить",
-  "action.clearConfirm": "Очистить {count} слотов?",
+  "action.clearConfirm": "Очистить {count}?",
+  "slots.selected": "{count} слотов выбрано",
+  "slots.selectedOne": "1 слот выбран",
   "output.prefix": "Я доступен:",
   "copied": "Скопировано!"
 }
