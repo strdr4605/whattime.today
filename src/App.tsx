@@ -26,6 +26,7 @@ function App() {
     goToToday,
     goToPrev,
     goToNext,
+    canGoPrev,
     localTimezone,
     targetTimezone,
     setTargetTimezone,
@@ -77,6 +78,7 @@ function App() {
               onToday={goToToday}
               onPrev={goToPrev}
               onNext={goToNext}
+              canGoPrev={canGoPrev}
             />
           )}
         </div>

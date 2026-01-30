@@ -78,8 +78,16 @@ export function useAvailability() {
     setWeekStart(getMonday(new Date()))
   }, [])
 
+  const currentWeekStart = getMonday(new Date())
+
+  const canGoPrev = weekStart.getTime() > currentWeekStart.getTime()
+
   const goToPrev = useCallback(() => {
-    setWeekStart((prev) => addDays(prev, -7))
+    const current = getMonday(new Date())
+    setWeekStart((prev) => {
+      const newWeek = addDays(prev, -7)
+      return newWeek.getTime() >= current.getTime() ? newWeek : prev
+    })
   }, [])
 
   const goToNext = useCallback(() => {
@@ -99,6 +107,7 @@ export function useAvailability() {
     goToToday,
     goToPrev,
     goToNext,
+    canGoPrev,
     localTimezone,
     targetTimezone,
     setTargetTimezone,

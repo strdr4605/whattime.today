@@ -6,9 +6,10 @@ type Props = {
   onToday: () => void
   onPrev: () => void
   onNext: () => void
+  canGoPrev: boolean
 }
 
-export function WeekNav({ weekStart, onToday, onPrev, onNext }: Props) {
+export function WeekNav({ weekStart, onToday, onPrev, onNext, canGoPrev }: Props) {
   const { t, formatDate } = useLocale()
   const weekEnd = addDays(weekStart, 6)
 
@@ -24,7 +25,8 @@ export function WeekNav({ weekStart, onToday, onPrev, onNext }: Props) {
       <button
         type="button"
         onClick={onPrev}
-        className="px-2 py-1 text-sm rounded bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
+        disabled={!canGoPrev}
+        className="px-2 py-1 text-sm rounded bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {t('nav.back')}
       </button>
