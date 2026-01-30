@@ -1,5 +1,7 @@
 import type { SlotKey, WeekDay, Hour } from '../types'
 import { WEEKDAYS, parseSlotKey } from '../types'
+import { convertHour, getTimezoneAbbr } from './timezoneUtils'
+import { addDays } from './dateUtils'
 
 type FormatOptions = {
   formatWeekday: (weekday: WeekDay) => string
@@ -7,12 +9,27 @@ type FormatOptions = {
   formatDate?: (date: Date) => string
   weekDates?: Date[]
   prefix: string
+  localTimezone?: string
+  targetTimezone?: string
+}
+
+type ConvertedSlot = {
+  date: Date
+  weekday: WeekDay
+  hour: number
 }
 
 export function formatOutput(slots: Set<SlotKey>, options: FormatOptions): string {
-  const { formatWeekday, formatHour, formatDate, weekDates, prefix } = options
+  const { formatWeekday, formatHour, formatDate, weekDates, prefix, localTimezone, targetTimezone } = options
 
   if (slots.size === 0) return ''
+
+  const needsConversion = localTimezone && targetTimezone && localTimezone !== targetTimezone
+  const tzAbbr = targetTimezone ? getTimezoneAbbr(targetTimezone) : ''
+
+  if (needsConversion && weekDates) {
+    return formatWithTimezoneConversion(slots, options, tzAbbr)
+  }
 
   const byDay = new Map<WeekDay, Hour[]>()
   slots.forEach((key) => {
@@ -36,10 +53,69 @@ export function formatOutput(slots: Set<SlotKey>, options: FormatOptions): strin
       dayLabel += ` (${formatDate(weekDates[idx])})`
     }
 
-    lines.push(`${dayLabel}: ${rangeStr}`)
+    lines.push(`${dayLabel}: ${rangeStr}${tzAbbr ? ` ${tzAbbr}` : ''}`)
   })
 
   return lines.join('\n')
+}
+
+function formatWithTimezoneConversion(
+  slots: Set<SlotKey>,
+  options: FormatOptions,
+  tzAbbr: string
+): string {
+  const { formatWeekday, formatHour, formatDate, weekDates, prefix, localTimezone, targetTimezone } = options
+
+  const convertedSlots: ConvertedSlot[] = []
+
+  slots.forEach((key) => {
+    const { weekday, hour } = parseSlotKey(key)
+    const dayIndex = WEEKDAYS.indexOf(weekday)
+    const date = weekDates![dayIndex]
+
+    const { hour: convertedHour, dayOffset } = convertHour(hour, date, localTimezone!, targetTimezone!)
+    const convertedDate = dayOffset !== 0 ? addDays(date, dayOffset) : date
+    const convertedWeekday = getWeekdayFromDate(convertedDate)
+
+    convertedSlots.push({
+      date: convertedDate,
+      weekday: convertedWeekday,
+      hour: Math.round(convertedHour),
+    })
+  })
+
+  const byDate = new Map<string, { date: Date; weekday: WeekDay; hours: number[] }>()
+  convertedSlots.forEach(({ date, weekday, hour }) => {
+    const key = date.toISOString().split('T')[0]
+    if (!byDate.has(key)) {
+      byDate.set(key, { date, weekday, hours: [] })
+    }
+    byDate.get(key)!.hours.push(hour)
+  })
+
+  const sortedDates = Array.from(byDate.entries()).sort(([a], [b]) => a.localeCompare(b))
+
+  const lines: string[] = [prefix]
+
+  sortedDates.forEach(([, { date, weekday, hours }]) => {
+    hours.sort((a, b) => a - b)
+    const ranges = mergeHours(hours as Hour[])
+    const rangeStr = ranges.map((r) => formatRange(r, formatHour)).join(', ')
+
+    let dayLabel = formatWeekday(weekday)
+    if (formatDate) {
+      dayLabel += ` (${formatDate(date)})`
+    }
+
+    lines.push(`${dayLabel}: ${rangeStr} ${tzAbbr}`)
+  })
+
+  return lines.join('\n')
+}
+
+function getWeekdayFromDate(date: Date): WeekDay {
+  const weekdays: WeekDay[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+  return weekdays[date.getDay()]
 }
 
 function mergeHours(hours: Hour[]): Array<[Hour, Hour]> {

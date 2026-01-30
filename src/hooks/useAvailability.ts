@@ -1,12 +1,15 @@
 import { useState, useCallback } from 'react'
 import type { Mode, SlotKey, TimeFormat } from '../types'
 import { getMonday, addDays } from '../utils/dateUtils'
+import { getUserTimezone } from '../utils/timezoneUtils'
 
 export function useAvailability() {
   const [mode, setMode] = useState<Mode>('week')
   const [timeFormat, setTimeFormat] = useState<TimeFormat>('12h')
   const [weekStart, setWeekStart] = useState(() => getMonday(new Date()))
   const [selectedSlots, setSelectedSlots] = useState<Set<SlotKey>>(new Set())
+  const [localTimezone] = useState(() => getUserTimezone())
+  const [targetTimezone, setTargetTimezone] = useState(() => getUserTimezone())
 
   const toggleSlot = useCallback((key: SlotKey) => {
     setSelectedSlots((prev) => {
@@ -57,5 +60,8 @@ export function useAvailability() {
     goToToday,
     goToPrev,
     goToNext,
+    localTimezone,
+    targetTimezone,
+    setTargetTimezone,
   }
 }

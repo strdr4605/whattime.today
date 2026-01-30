@@ -2,6 +2,8 @@ import { useLocale } from './hooks/useLocale'
 import { useAvailability } from './hooks/useAvailability'
 import { ModeToggle } from './components/ModeToggle'
 import { TimeFormatToggle } from './components/TimeFormatToggle'
+import { TimezoneSelect } from './components/TimezoneSelect'
+import { SettingsMenu } from './components/SettingsMenu'
 import { WeekNav } from './components/WeekNav'
 import { TimeList } from './components/TimeList'
 import { TimeGrid } from './components/TimeGrid'
@@ -21,6 +23,9 @@ function App() {
     goToToday,
     goToPrev,
     goToNext,
+    localTimezone,
+    targetTimezone,
+    setTargetTimezone,
   } = useAvailability()
 
   const { t } = useLocale(timeFormat)
@@ -36,7 +41,23 @@ function App() {
                 {' '}{t('app.subtitle')}
               </span>
             </h1>
-            <div className="flex gap-2">
+            <div className="md:hidden">
+              <SettingsMenu
+                localTimezone={localTimezone}
+                targetTimezone={targetTimezone}
+                onTimezoneChange={setTargetTimezone}
+                timeFormat={timeFormat}
+                onTimeFormatChange={setTimeFormat}
+                mode={mode}
+                onModeChange={setMode}
+              />
+            </div>
+            <div className="hidden md:flex gap-2">
+              <TimezoneSelect
+                localTimezone={localTimezone}
+                targetTimezone={targetTimezone}
+                onChange={setTargetTimezone}
+              />
               <TimeFormatToggle timeFormat={timeFormat} onChange={setTimeFormat} />
               <ModeToggle mode={mode} onChange={setMode} />
             </div>
@@ -80,6 +101,8 @@ function App() {
         selectedSlots={selectedSlots}
         onClear={clearSlots}
         timeFormat={timeFormat}
+        localTimezone={localTimezone}
+        targetTimezone={targetTimezone}
       />
     </div>
   )

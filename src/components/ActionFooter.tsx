@@ -10,9 +10,11 @@ type Props = {
   selectedSlots: Set<SlotKey>
   onClear: () => void
   timeFormat: TimeFormat
+  localTimezone: string
+  targetTimezone: string
 }
 
-export function ActionFooter({ mode, weekStart, selectedSlots, onClear, timeFormat }: Props) {
+export function ActionFooter({ mode, weekStart, selectedSlots, onClear, timeFormat, localTimezone, targetTimezone }: Props) {
   const { t, formatWeekday, formatHour, formatDate } = useLocale(timeFormat)
   const [copied, setCopied] = useState(false)
   const [confirmClear, setConfirmClear] = useState(false)
@@ -27,6 +29,8 @@ export function ActionFooter({ mode, weekStart, selectedSlots, onClear, timeForm
       formatDate: mode === 'week' ? formatDate : undefined,
       weekDates,
       prefix: t('output.prefix'),
+      localTimezone,
+      targetTimezone,
     })
 
     await navigator.clipboard.writeText(text)

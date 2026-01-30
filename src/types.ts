@@ -35,3 +35,21 @@ export function parseSlotKey(key: SlotKey): { weekday: WeekDay; hour: Hour } {
   const [weekday, hourStr] = key.split('-') as [WeekDay, string]
   return { weekday, hour: parseInt(hourStr, 10) as Hour }
 }
+
+export const TIMEZONES = [
+  'UTC',
+  'America/New_York',
+  'America/Chicago',
+  'America/Denver',
+  'America/Los_Angeles',
+  'Europe/London',
+  'Europe/Paris',
+  'Europe/Berlin',
+  'Europe/Chisinau',
+  'Asia/Tokyo',
+  'Asia/Shanghai',
+  'Asia/Kolkata',
+  'Australia/Sydney',
+] as const
+
+export type Timezone = (typeof TIMEZONES)[number] | string
