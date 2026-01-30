@@ -12,6 +12,15 @@ type Props = {
 
 export function TimeList({ mode, weekStart, selectedSlots, onToggle }: Props) {
   const weekDates = mode === 'week' ? getWeekDates(weekStart) : undefined
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  const isToday = (date?: Date) => {
+    if (!date) return false
+    const d = new Date(date)
+    d.setHours(0, 0, 0, 0)
+    return d.getTime() === today.getTime()
+  }
 
   return (
     <div className="space-y-6">
@@ -22,6 +31,7 @@ export function TimeList({ mode, weekStart, selectedSlots, onToggle }: Props) {
           date={weekDates?.[idx]}
           selectedSlots={selectedSlots}
           onToggle={onToggle}
+          isToday={mode === 'week' && isToday(weekDates?.[idx])}
         />
       ))}
     </div>

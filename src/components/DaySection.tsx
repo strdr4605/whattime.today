@@ -8,17 +8,25 @@ type Props = {
   date?: Date
   selectedSlots: Set<SlotKey>
   onToggle: (key: SlotKey) => void
+  isToday?: boolean
 }
 
-export function DaySection({ weekday, date, selectedSlots, onToggle }: Props) {
+export function DaySection({ weekday, date, selectedSlots, onToggle, isToday }: Props) {
   const { formatWeekday, formatDate } = useLocale()
+  const isWeekend = weekday === 'saturday' || weekday === 'sunday'
 
   const label = date
     ? `${formatWeekday(weekday)} (${formatDate(date)})`
     : formatWeekday(weekday)
 
+  const bgClass = isToday
+    ? 'bg-blue-50 dark:bg-blue-900/30'
+    : isWeekend
+      ? 'bg-gray-50 dark:bg-gray-800/50'
+      : ''
+
   return (
-    <div className="space-y-2">
+    <div className={`space-y-2 p-3 -mx-3 rounded-lg ${bgClass}`}>
       <h3 className="font-medium text-gray-900 dark:text-gray-100">{label}</h3>
       <div className="flex flex-wrap gap-2">
         {HOURS.map((hour: Hour) => {
