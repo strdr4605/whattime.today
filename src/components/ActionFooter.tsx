@@ -37,6 +37,9 @@ export function ActionFooter({ mode, weekStart, selectedSlots, onClear, timeForm
     await navigator.clipboard.writeText(text)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+
+    // Track copy event
+    window.umami?.track('Copy availability', { slots: count, mode, locale })
   }
 
   const handleClear = () => {
