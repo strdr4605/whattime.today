@@ -1,3 +1,4 @@
+import type { Locale } from '../types'
 import { useLocale } from '../hooks/useLocale'
 import { addDays } from '../utils/dateUtils'
 
@@ -7,10 +8,11 @@ type Props = {
   onPrev: () => void
   onNext: () => void
   canGoPrev: boolean
+  locale: Locale
 }
 
-export function WeekNav({ weekStart, onToday, onPrev, onNext, canGoPrev }: Props) {
-  const { t, formatDate } = useLocale()
+export function WeekNav({ weekStart, onToday, onPrev, onNext, canGoPrev, locale }: Props) {
+  const { t, formatDate } = useLocale('12h', locale)
   const weekEnd = addDays(weekStart, 6)
 
   return (

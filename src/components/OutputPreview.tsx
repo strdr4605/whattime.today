@@ -42,7 +42,7 @@ export function OutputPreview({
     return (
       <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
         <p className="text-sm text-gray-400 dark:text-gray-500 italic">
-          Select time slots to see preview
+          {t('preview.empty')}
         </p>
       </div>
     )

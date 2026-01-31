@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import type { Mode, TimeFormat, Locale, Interval } from '../types'
+import { useLocale } from '../hooks/useLocale'
 import { TimezoneSelect } from './TimezoneSelect'
 import { TimeFormatToggle } from './TimeFormatToggle'
 import { ModeToggle } from './ModeToggle'
@@ -34,6 +35,7 @@ export function SettingsMenu({
   interval,
   onIntervalChange,
 }: Props) {
+  const { t } = useLocale(timeFormat, locale)
   const [open, setOpen] = useState(false)
   const [aboutOpen, setAboutOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -56,7 +58,7 @@ export function SettingsMenu({
         type="button"
         onClick={() => setOpen(!open)}
         className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
-        aria-label="Settings menu"
+        aria-label={t('settings.ariaLabel')}
       >
         <svg
           className="w-5 h-5"
@@ -76,27 +78,28 @@ export function SettingsMenu({
       {open && (
         <div className="absolute right-0 top-full mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 space-y-4 z-50">
           <div className="flex items-center justify-between gap-4">
-            <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">Timezone</label>
+            <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">{t('settings.timezone')}</label>
             <TimezoneSelect
               localTimezone={localTimezone}
               targetTimezone={targetTimezone}
               onChange={onTimezoneChange}
+              locale={locale}
             />
           </div>
           <div className="flex items-center justify-between gap-4">
-            <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">Time format</label>
+            <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">{t('settings.timeFormat')}</label>
             <TimeFormatToggle timeFormat={timeFormat} onChange={onTimeFormatChange} />
           </div>
           <div className="flex items-center justify-between gap-4">
-            <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">Interval</label>
+            <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">{t('settings.interval')}</label>
             <IntervalToggle interval={interval} onChange={onIntervalChange} />
           </div>
           <div className="flex items-center justify-between gap-4">
-            <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">View</label>
+            <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">{t('settings.view')}</label>
             <ModeToggle mode={mode} onChange={onModeChange} />
           </div>
           <div className="flex items-center justify-between gap-4">
-            <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">Language</label>
+            <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">{t('settings.language')}</label>
             <LocaleSelect locale={locale} onChange={onLocaleChange} />
           </div>
           <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
@@ -105,12 +108,12 @@ export function SettingsMenu({
               onClick={() => { setAboutOpen(true); setOpen(false) }}
               className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
             >
-              About
+              {t('settings.about')}
             </button>
           </div>
         </div>
       )}
-      <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
+      <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} locale={locale} />
     </div>
   )
 }

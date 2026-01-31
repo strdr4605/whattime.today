@@ -1,13 +1,16 @@
-import { TIMEZONES } from '../types'
+import { TIMEZONES, type Locale } from '../types'
 import { getTimezoneAbbr } from '../utils/timezoneUtils'
+import { useLocale } from '../hooks/useLocale'
 
 type Props = {
   localTimezone: string
   targetTimezone: string
   onChange: (tz: string) => void
+  locale: Locale
 }
 
-export function TimezoneSelect({ localTimezone, targetTimezone, onChange }: Props) {
+export function TimezoneSelect({ localTimezone, targetTimezone, onChange, locale }: Props) {
+  const { t } = useLocale('12h', locale)
   const timezoneList = [
     localTimezone,
     ...TIMEZONES.filter((tz) => tz !== localTimezone),
@@ -22,7 +25,7 @@ export function TimezoneSelect({ localTimezone, targetTimezone, onChange }: Prop
       {timezoneList.map((tz) => (
         <option key={tz} value={tz}>
           {getTimezoneAbbr(tz)} - {tz}
-          {tz === localTimezone ? ' (You)' : ''}
+          {tz === localTimezone ? ` ${t('timezone.you')}` : ''}
         </option>
       ))}
     </select>

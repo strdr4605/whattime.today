@@ -1,7 +1,12 @@
 import { useState } from 'react'
+import type { Locale } from '../types'
 import { AboutModal } from './AboutModal'
 
-export function AboutButton() {
+type Props = {
+  locale: Locale
+}
+
+export function AboutButton({ locale }: Props) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -13,7 +18,7 @@ export function AboutButton() {
       >
         ?
       </button>
-      <AboutModal open={open} onClose={() => setOpen(false)} />
+      <AboutModal open={open} onClose={() => setOpen(false)} locale={locale} />
     </>
   )
 }

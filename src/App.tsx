@@ -70,12 +70,13 @@ function App() {
                 localTimezone={localTimezone}
                 targetTimezone={targetTimezone}
                 onChange={setTargetTimezone}
+                locale={locale}
               />
               <TimeFormatToggle timeFormat={timeFormat} onChange={setTimeFormat} />
               <IntervalToggle interval={interval} onChange={setInterval} />
               <ModeToggle mode={mode} onChange={setMode} />
               <LocaleSelect locale={locale} onChange={setLocale} />
-              <AboutButton />
+              <AboutButton locale={locale} />
             </div>
           </div>
           {mode === 'week' && (
@@ -85,6 +86,7 @@ function App() {
               onPrev={goToPrev}
               onNext={goToNext}
               canGoPrev={canGoPrev}
+              locale={locale}
             />
           )}
         </div>
