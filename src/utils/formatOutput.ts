@@ -50,7 +50,7 @@ export function formatOutput(slots: Set<SlotKey>, options: FormatOptions): strin
 
     timeSlots.sort((a, b) => a.hour * 60 + a.minute - (b.hour * 60 + b.minute))
     const ranges = mergeTimeSlots(timeSlots, interval)
-    const rangeStr = ranges.map((r) => formatTimeRange(r, formatTime)).join(', ')
+    const rangeStr = ranges.map((r) => formatTimeRange(r, formatTime, interval)).join(', ')
 
     let dayLabel = formatWeekday(weekday)
     if (formatDate && weekDates) {
@@ -105,7 +105,7 @@ function formatWithTimezoneConversion(
   sortedDates.forEach(([, { date, weekday, timeSlots }]) => {
     timeSlots.sort((a, b) => a.hour * 60 + a.minute - (b.hour * 60 + b.minute))
     const ranges = mergeTimeSlots(timeSlots, interval)
-    const rangeStr = ranges.map((r) => formatTimeRange(r, formatTime)).join(', ')
+    const rangeStr = ranges.map((r) => formatTimeRange(r, formatTime, interval)).join(', ')
 
     let dayLabel = formatWeekday(weekday)
     if (formatDate) {
@@ -153,10 +153,11 @@ function addStep(slot: TimeSlot, interval: Interval): TimeSlot {
   return { hour: Math.floor(totalMinutes / 60) as Hour, minute: (totalMinutes % 60) as Minute }
 }
 
-function formatTimeRange([start, end]: [TimeSlot, TimeSlot], formatTime: (h: Hour, m: Minute) => string): string {
-  if (start.hour === end.hour && start.minute === end.minute) {
-    return formatTime(start.hour, start.minute)
-  }
-  const endPlusStep = addStep(end, start.minute === 0 && end.minute === 0 ? '1h' : '30min')
+function formatTimeRange(
+  [start, end]: [TimeSlot, TimeSlot],
+  formatTime: (h: Hour, m: Minute) => string,
+  interval: Interval
+): string {
+  const endPlusStep = addStep(end, interval)
   return `${formatTime(start.hour, start.minute)}-${formatTime(endPlusStep.hour, endPlusStep.minute)}`
 }
