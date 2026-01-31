@@ -2,7 +2,7 @@
 
 Mobile-first time availability picker. Mark slots, copy formatted text.
 
-**Live:** https://strdr4605.com/wtt/
+**Live:** https://whattime.today/
 
 ## Credits
 
