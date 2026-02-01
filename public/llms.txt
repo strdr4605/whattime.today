@@ -1,0 +1,28 @@
+# What Time Today
+
+> Simple tool to share your availability as plain text. Select time slots, convert timezones, copy and send. No calendar links needed.
+
+## What it does
+
+A mobile-first web app for quickly sharing when you're available. Instead of sending calendar links, select your free time slots and copy formatted text to paste anywhere - email, chat, SMS.
+
+## Features
+
+- Visual time slot picker (week view or generic weekday view)
+- Timezone conversion (show availability in recipient's timezone)
+- 1-hour or 30-minute intervals
+- 12h/24h time format toggle
+- Copy to clipboard with one tap
+- Works offline (PWA)
+- No signup required
+
+## Use cases
+
+- Sharing availability with recruiters
+- Coordinating meetings with coworkers
+- Planning with friends across timezones
+- Quick response to "when are you free?"
+
+## URL
+
+https://whattime.today/

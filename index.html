@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
+  <link rel="canonical" href="https://whattime.today/" />
   <link rel="icon" href="favicon.ico" />
   <link rel="icon" type="image/svg+xml" href="logo.svg" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
@@ -27,6 +28,35 @@
   <meta name="twitter:image" content="https://whattime.today/og-image.png" />
 
   <title>WTT - What Time Today</title>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "What Time Today",
+    "alternateName": "WTT",
+    "url": "https://whattime.today",
+    "description": "Simple tool to share your availability as plain text. Select time slots, convert timezones, copy and send. No calendar links needed.",
+    "applicationCategory": "ProductivityApplication",
+    "operatingSystem": "Any",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "Visual time slot picker",
+      "Timezone conversion",
+      "1-hour or 30-minute intervals",
+      "12h/24h time format",
+      "Copy to clipboard",
+      "Works offline (PWA)",
+      "No signup required"
+    ]
+  }
+  </script>
   <script defer src="https://cloud.umami.is/script.js" data-website-id="397ad6f4-fe13-4039-a7b0-de64c943895f" data-domains="whattime.today,www.whattime.today,strdr4605.github.io,strdr4605.com"></script>
 </head>
 
