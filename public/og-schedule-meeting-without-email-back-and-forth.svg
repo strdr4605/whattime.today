@@ -1,0 +1,43 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#ffffff"/>
+
+  <!-- Header -->
+  <text x="60" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#6b7280">WTT Blog</text>
+
+  <!-- Main title -->
+  <text x="60" y="160" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="bold" fill="#111827">Schedule Meetings</text>
+  <text x="60" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="bold" fill="#111827">Without Back-and-Forth</text>
+  <text x="60" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="bold" fill="#dc2626">Emails</text>
+
+  <!-- Visual: email chain (bad) vs WTT (good) -->
+  <g transform="translate(60, 310)">
+    <!-- Bad: email chain -->
+    <text x="0" y="25" font-family="system-ui, sans-serif" font-size="16" fill="#dc2626" font-weight="bold">Before:</text>
+    <rect x="0" y="35" width="450" height="130" rx="8" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+    <text x="15" y="60" font-family="system-ui, sans-serif" font-size="14" fill="#991b1b">Re: Re: Re: Meeting time?</text>
+    <text x="15" y="82" font-family="system-ui, sans-serif" font-size="13" fill="#6b7280">&#x2192; "How about Thursday?"</text>
+    <text x="15" y="102" font-family="system-ui, sans-serif" font-size="13" fill="#6b7280">&#x2192; "Sorry, I can't Thursday. Friday?"</text>
+    <text x="15" y="122" font-family="system-ui, sans-serif" font-size="13" fill="#6b7280">&#x2192; "Friday works but only after 2pm"</text>
+    <text x="15" y="142" font-family="system-ui, sans-serif" font-size="13" fill="#6b7280">&#x2192; "Actually, can we revisit next week?"</text>
+    <text x="15" y="160" font-family="system-ui, sans-serif" font-size="12" fill="#dc2626">5 emails, 3 days, still no meeting</text>
+  </g>
+
+  <!-- Good: WTT approach -->
+  <g transform="translate(560, 310)">
+    <text x="0" y="25" font-family="system-ui, sans-serif" font-size="16" fill="#16a34a" font-weight="bold">After:</text>
+    <rect x="0" y="35" width="450" height="130" rx="8" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+    <text x="15" y="60" font-family="system-ui, sans-serif" font-size="14" fill="#166534">Meeting time?</text>
+    <text x="15" y="85" font-family="ui-monospace, monospace" font-size="14" fill="#374151">I'm available:</text>
+    <text x="15" y="107" font-family="ui-monospace, monospace" font-size="14" fill="#374151">Thu: 10am - 12pm, 2pm - 5pm</text>
+    <text x="15" y="129" font-family="ui-monospace, monospace" font-size="14" fill="#374151">Fri: 9am - 12pm, 2pm - 4pm</text>
+    <text x="15" y="160" font-family="system-ui, sans-serif" font-size="12" fill="#16a34a">1 email, instant clarity</text>
+  </g>
+
+  <!-- CTA -->
+  <rect x="900" y="500" width="240" height="60" rx="8" fill="#2563eb"/>
+  <text x="1020" y="538" font-family="system-ui, sans-serif" font-size="20" font-weight="bold" fill="#ffffff" text-anchor="middle">Try WTT Free &#x2192;</text>
+
+  <!-- URL -->
+  <text x="1020" y="590" font-family="system-ui, sans-serif" font-size="16" fill="#9ca3af" text-anchor="middle">whattime.today</text>
+</svg>

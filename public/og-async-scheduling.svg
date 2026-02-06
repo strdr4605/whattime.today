@@ -1,0 +1,38 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#ffffff"/>
+
+  <!-- Header -->
+  <text x="60" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#6b7280">WTT Blog</text>
+
+  <!-- Main title -->
+  <text x="60" y="160" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="bold" fill="#111827">Async Scheduling:</text>
+  <text x="60" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="bold" fill="#111827">Share Availability</text>
+  <text x="60" y="280" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="bold" fill="#2563eb">Without Coordinating</text>
+
+  <!-- Subtitle -->
+  <text x="60" y="330" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#6b7280">No back-and-forth. No real-time calls. Just paste your times.</text>
+
+  <!-- Async visual: two bubbles with clock gap -->
+  <g transform="translate(60, 370)">
+    <!-- Person A sends -->
+    <rect x="0" y="0" width="350" height="80" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+    <text x="20" y="28" font-family="system-ui, sans-serif" font-size="13" fill="#6b7280">9:15 AM - You sent</text>
+    <text x="20" y="55" font-family="ui-monospace, monospace" font-size="15" fill="#374151">Mon: 2pm-5pm, Tue: 10am-12pm</text>
+
+    <!-- Time gap indicator -->
+    <text x="420" y="45" font-family="system-ui, sans-serif" font-size="16" fill="#9ca3af">3 hours later...</text>
+
+    <!-- Person B replies -->
+    <rect x="0" y="100" width="350" height="80" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+    <text x="20" y="128" font-family="system-ui, sans-serif" font-size="13" fill="#6b7280">12:30 PM - They replied</text>
+    <text x="20" y="155" font-family="system-ui, sans-serif" font-size="15" fill="#374151">Tuesday 10am works! See you then.</text>
+  </g>
+
+  <!-- CTA -->
+  <rect x="900" y="500" width="240" height="60" rx="8" fill="#2563eb"/>
+  <text x="1020" y="538" font-family="system-ui, sans-serif" font-size="20" font-weight="bold" fill="#ffffff" text-anchor="middle">Try WTT Free &#x2192;</text>
+
+  <!-- URL -->
+  <text x="1020" y="590" font-family="system-ui, sans-serif" font-size="16" fill="#9ca3af" text-anchor="middle">whattime.today</text>
+</svg>
