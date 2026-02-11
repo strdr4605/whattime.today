@@ -12,6 +12,7 @@ type Props = {
   localTimezone: string
   targetTimezone: string
   interval: Interval
+  appendLink: boolean
 }
 
 export function OutputPreview({
@@ -23,10 +24,12 @@ export function OutputPreview({
   localTimezone,
   targetTimezone,
   interval,
+  appendLink,
 }: Props) {
   const { t, formatWeekday, formatTime, formatDate } = useLocale(timeFormat, locale)
 
   const weekDates = mode === 'week' ? getWeekDates(weekStart) : undefined
+  const linkUrl = appendLink ? window.location.origin + window.location.pathname : undefined
   const text = formatOutput(selectedSlots, {
     formatWeekday,
     formatTime,
@@ -36,6 +39,7 @@ export function OutputPreview({
     localTimezone,
     targetTimezone,
     interval,
+    appendLink: linkUrl,
   })
 
   if (selectedSlots.size === 0) {

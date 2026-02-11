@@ -13,6 +13,7 @@ type PersistedState = {
   selectedSlots: SlotKey[]
   locale: Locale
   interval: Interval
+  appendLink: boolean
 }
 
 function loadState(): Partial<PersistedState> {
@@ -41,6 +42,7 @@ export function useAvailability() {
   const [targetTimezone, setTargetTimezone] = useState(() => loadState().targetTimezone ?? getUserTimezone())
   const [locale, setLocale] = useState<Locale>(() => loadState().locale ?? getUserLocale())
   const [interval, setInterval] = useState<Interval>(() => loadState().interval ?? '1h')
+  const [appendLink, setAppendLink] = useState<boolean>(() => loadState().appendLink ?? false)
 
   useEffect(() => {
     saveState({
@@ -50,8 +52,9 @@ export function useAvailability() {
       selectedSlots: Array.from(selectedSlots),
       locale,
       interval,
+      appendLink,
     })
-  }, [mode, timeFormat, targetTimezone, selectedSlots, locale, interval])
+  }, [mode, timeFormat, targetTimezone, selectedSlots, locale, interval, appendLink])
 
   const toggleSlot = useCallback((key: SlotKey) => {
     setSelectedSlots((prev) => {
@@ -118,5 +121,7 @@ export function useAvailability() {
     setLocale,
     interval,
     setInterval,
+    appendLink,
+    setAppendLink,
   }
 }

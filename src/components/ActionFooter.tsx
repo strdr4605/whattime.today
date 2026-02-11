@@ -16,9 +16,10 @@ type Props = {
   targetTimezone: string
   locale: Locale
   interval: Interval
+  appendLink: boolean
 }
 
-export function ActionFooter({ mode, weekStart, selectedSlots, onClear, timeFormat, localTimezone, targetTimezone, locale, interval }: Props) {
+export function ActionFooter({ mode, weekStart, selectedSlots, onClear, timeFormat, localTimezone, targetTimezone, locale, interval, appendLink }: Props) {
   const { t, formatWeekday, formatTime, formatDate } = useLocale(timeFormat, locale)
   const [copied, setCopied] = useState(false)
   const [confirmClear, setConfirmClear] = useState(false)
@@ -28,6 +29,7 @@ export function ActionFooter({ mode, weekStart, selectedSlots, onClear, timeForm
 
   const handleCopy = async () => {
     const weekDates = mode === 'week' ? getWeekDates(weekStart) : undefined
+    const linkUrl = appendLink ? window.location.origin + window.location.pathname : undefined
     const text = formatOutput(selectedSlots, {
       formatWeekday,
       formatTime,
@@ -37,6 +39,7 @@ export function ActionFooter({ mode, weekStart, selectedSlots, onClear, timeForm
       localTimezone,
       targetTimezone,
       interval,
+      appendLink: linkUrl,
     })
 
     await navigator.clipboard.writeText(text)

@@ -12,6 +12,7 @@ type FormatOptions = {
   localTimezone?: string
   targetTimezone?: string
   interval: Interval
+  appendLink?: string
 }
 
 type ConvertedSlot = {
@@ -24,7 +25,7 @@ type ConvertedSlot = {
 type TimeSlot = { hour: Hour; minute: Minute }
 
 export function formatOutput(slots: Set<SlotKey>, options: FormatOptions): string {
-  const { formatWeekday, formatTime, formatDate, weekDates, prefix, localTimezone, targetTimezone, interval } = options
+  const { formatWeekday, formatTime, formatDate, weekDates, prefix, localTimezone, targetTimezone, interval, appendLink } = options
 
   if (slots.size === 0) return ''
 
@@ -60,7 +61,11 @@ export function formatOutput(slots: Set<SlotKey>, options: FormatOptions): strin
     lines.push(`${dayLabel}: ${rangeStr}${tzAbbr ? ` ${tzAbbr}` : ''}`)
   })
 
-  return lines.join('\n')
+  let result = lines.join('\n')
+  if (appendLink) {
+    result += `\n\n${appendLink}`
+  }
+  return result
 }
 
 function formatWithTimezoneConversion(
@@ -68,7 +73,7 @@ function formatWithTimezoneConversion(
   options: FormatOptions,
   tzAbbr: string
 ): string {
-  const { formatWeekday, formatTime, formatDate, weekDates, prefix, localTimezone, targetTimezone, interval } = options
+  const { formatWeekday, formatTime, formatDate, weekDates, prefix, localTimezone, targetTimezone, interval, appendLink } = options
 
   const convertedSlots: ConvertedSlot[] = []
 
@@ -115,7 +120,11 @@ function formatWithTimezoneConversion(
     lines.push(`${dayLabel}: ${rangeStr} ${tzAbbr}`)
   })
 
-  return lines.join('\n')
+  let result = lines.join('\n')
+  if (appendLink) {
+    result += `\n\n${appendLink}`
+  }
+  return result
 }
 
 function getWeekdayFromDate(date: Date): WeekDay {

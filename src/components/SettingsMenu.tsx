@@ -6,6 +6,7 @@ import { TimeFormatToggle } from './TimeFormatToggle'
 import { ModeToggle } from './ModeToggle'
 import { LocaleSelect } from './LocaleSelect'
 import { IntervalToggle } from './IntervalToggle'
+import { AppLinkToggle } from './AppLinkToggle'
 import { AboutModal } from './AboutModal'
 
 type Props = {
@@ -20,6 +21,8 @@ type Props = {
   onLocaleChange: (locale: Locale) => void
   interval: Interval
   onIntervalChange: (interval: Interval) => void
+  appendLink: boolean
+  onAppendLinkChange: (v: boolean) => void
 }
 
 export function SettingsMenu({
@@ -34,6 +37,8 @@ export function SettingsMenu({
   onLocaleChange,
   interval,
   onIntervalChange,
+  appendLink,
+  onAppendLinkChange,
 }: Props) {
   const { t } = useLocale(timeFormat, locale)
   const [open, setOpen] = useState(false)
@@ -101,6 +106,10 @@ export function SettingsMenu({
           <div className="flex items-center justify-between gap-4">
             <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">{t('settings.language')}</label>
             <LocaleSelect locale={locale} onChange={onLocaleChange} />
+          </div>
+          <div className="flex items-center justify-between gap-4">
+            <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">{t('settings.appendLink')}</label>
+            <AppLinkToggle appendLink={appendLink} onChange={onAppendLinkChange} />
           </div>
           <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
             <button
