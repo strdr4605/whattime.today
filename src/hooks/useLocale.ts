@@ -8,6 +8,7 @@ import pt from '../locales/pt.json'
 import ro from '../locales/ro.json'
 import ru from '../locales/ru.json'
 import type { WeekDay, Hour, TimeFormat, Locale, Minute } from '../types'
+import { addDays, getMonday } from '../utils/dateUtils'
 
 type TranslationKey = keyof typeof en
 
@@ -39,6 +40,19 @@ export function useLocale(timeFormat: TimeFormat = '12h', locale: Locale = 'en')
 
   const formatDate = (date: Date): string => formatters.date.format(date)
 
+  // Human period for a week: "This week", "Next week", "Last week".
+  // Weeks further away fall back to their date range.
+  const formatWeekLabel = (monday: Date): string => {
+    const days = Math.round((monday.getTime() - getMonday(new Date()).getTime()) / 86400000)
+    const weeks = days / 7
+    const range = `${formatDate(monday)} - ${formatDate(addDays(monday, 6))}`
+
+    if (weeks === 0) return `${t('output.week.this')} (${range})`
+    if (weeks === 1) return `${t('output.week.next')} (${range})`
+    if (weeks === -1) return `${t('output.week.last')} (${range})`
+    return range
+  }
+
   const formatWeekday = (weekday: WeekDay, format: 'short' | 'long' = 'short'): string => {
     const dayIndex = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].indexOf(weekday)
     const date = new Date(2024, 0, 1 + dayIndex) // Jan 1, 2024 was Monday
@@ -62,7 +76,7 @@ export function useLocale(timeFormat: TimeFormat = '12h', locale: Locale = 'en')
     return formatters.hour12.format(date).toLowerCase().replace(' ', '')
   }
 
-  return { t, formatDate, formatWeekday, formatHour, formatTime, locale }
+  return { t, formatDate, formatWeekLabel, formatWeekday, formatHour, formatTime, locale }
 }
 
 export function getUserLocale(): Locale {

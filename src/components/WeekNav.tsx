@@ -8,15 +8,16 @@ type Props = {
   onPrev: () => void
   onNext: () => void
   canGoPrev: boolean
+  weeksCount: number
   locale: Locale
 }
 
-export function WeekNav({ weekStart, onToday, onPrev, onNext, canGoPrev, locale }: Props) {
+export function WeekNav({ weekStart, onToday, onPrev, onNext, canGoPrev, weeksCount, locale }: Props) {
   const { t, formatDate } = useLocale('12h', locale)
   const weekEnd = addDays(weekStart, 6)
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 flex-wrap">
       <button
         type="button"
         onClick={onToday}
@@ -37,11 +38,16 @@ export function WeekNav({ weekStart, onToday, onPrev, onNext, canGoPrev, locale 
         onClick={onNext}
         className="px-2 py-1 text-sm rounded bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
       >
-        {t('nav.next')}
+        {t('nav.nextWeek')}
       </button>
       <span className="text-sm text-gray-600 dark:text-gray-400">
         {formatDate(weekStart)} - {formatDate(weekEnd)}
       </span>
+      {weeksCount > 1 && (
+        <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300">
+          {t('mode.week.count', { count: weeksCount })}
+        </span>
+      )}
     </div>
   )
 }

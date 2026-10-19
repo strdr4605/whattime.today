@@ -21,14 +21,16 @@ function App() {
     setMode,
     timeFormat,
     setTimeFormat,
-    weekStart,
-    selectedSlots,
+    currentWeekStart,
+    currentWeekSlots,
+    weekSelections,
+    totalSelectedCount,
     toggleSlot,
     selectSlots,
     clearSlots,
     goToToday,
     goToPrev,
-    goToNext,
+    addWeek,
     canGoPrev,
     localTimezone,
     targetTimezone,
@@ -94,11 +96,12 @@ function App() {
           <div className="flex items-center justify-between gap-4">
             {mode === 'week' && (
               <WeekNav
-                weekStart={weekStart}
+                weekStart={currentWeekStart}
                 onToday={goToToday}
                 onPrev={goToPrev}
-                onNext={goToNext}
+                onNext={addWeek}
                 canGoPrev={canGoPrev}
+                weeksCount={weekSelections.length}
                 locale={locale}
               />
             )}
@@ -115,19 +118,19 @@ function App() {
         <div className="md:hidden">
           <TimeList
             mode={mode}
-            weekStart={weekStart}
-            selectedSlots={selectedSlots}
+            weekStart={currentWeekStart}
+            selectedSlots={currentWeekSlots}
             onToggle={toggleSlot}
             timeFormat={timeFormat}
             locale={locale}
             interval={interval}
           />
-          {selectedSlots.size > 0 && (
+          {totalSelectedCount > 0 && (
             <div className="mt-6 mb-4">
               <OutputPreview
                 mode={mode}
-                weekStart={weekStart}
-                selectedSlots={selectedSlots}
+                weekSelections={weekSelections}
+                currentWeekSlots={currentWeekSlots}
                 timeFormat={timeFormat}
                 locale={locale}
                 localTimezone={localTimezone}
@@ -142,8 +145,8 @@ function App() {
           <div className="flex-1 min-w-0">
             <TimeGrid
               mode={mode}
-              weekStart={weekStart}
-              selectedSlots={selectedSlots}
+              weekStart={currentWeekStart}
+              selectedSlots={currentWeekSlots}
               onToggle={toggleSlot}
               onSelect={selectSlots}
               timeFormat={timeFormat}
@@ -154,8 +157,8 @@ function App() {
           <div className="hidden xl:block w-80 flex-shrink-0">
             <OutputPreview
               mode={mode}
-              weekStart={weekStart}
-              selectedSlots={selectedSlots}
+              weekSelections={weekSelections}
+              currentWeekSlots={currentWeekSlots}
               timeFormat={timeFormat}
               locale={locale}
               localTimezone={localTimezone}
@@ -169,8 +172,8 @@ function App() {
 
       <ActionFooter
         mode={mode}
-        weekStart={weekStart}
-        selectedSlots={selectedSlots}
+        weekSelections={weekSelections}
+        currentWeekSlots={currentWeekSlots}
         onClear={clearSlots}
         timeFormat={timeFormat}
         localTimezone={localTimezone}

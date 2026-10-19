@@ -1,15 +1,14 @@
 import { useState } from 'react'
-import type { SlotKey, Mode, TimeFormat, Locale, Interval } from '../types'
+import type { Mode, TimeFormat, Locale, Interval, WeekSelection, SlotKey } from '../types'
 import { useLocale } from '../hooks/useLocale'
 import { useInstallPrompt } from '../hooks/useInstallPrompt'
-import { formatOutput } from '../utils/formatOutput'
-import { getWeekDates } from '../utils/dateUtils'
+import { formatOutput, formatOutputMultiWeek } from '../utils/formatOutput'
 import { InstallPrompt } from './InstallPrompt'
 
 type Props = {
   mode: Mode
-  weekStart: Date
-  selectedSlots: Set<SlotKey>
+  weekSelections: WeekSelection[]
+  currentWeekSlots: Set<SlotKey>
   onClear: () => void
   timeFormat: TimeFormat
   localTimezone: string
@@ -19,28 +18,37 @@ type Props = {
   appendLink: boolean
 }
 
-export function ActionFooter({ mode, weekStart, selectedSlots, onClear, timeFormat, localTimezone, targetTimezone, locale, interval, appendLink }: Props) {
-  const { t, formatWeekday, formatTime, formatDate } = useLocale(timeFormat, locale)
+export function ActionFooter({ mode, weekSelections, currentWeekSlots, onClear, timeFormat, localTimezone, targetTimezone, locale, interval, appendLink }: Props) {
+  const { t, formatWeekday, formatTime, formatDate, formatWeekLabel } = useLocale(timeFormat, locale)
   const [copied, setCopied] = useState(false)
   const [confirmClear, setConfirmClear] = useState(false)
   const { showPrompt, trackCopy, dismissPrompt } = useInstallPrompt()
 
-  const count = selectedSlots.size
+  const count = weekSelections.reduce((s, w) => s + w.slots.length, 0)
 
   const handleCopy = async () => {
-    const weekDates = mode === 'week' ? getWeekDates(weekStart) : undefined
     const linkUrl = appendLink ? window.location.origin + window.location.pathname + '?s=1' : undefined
-    const text = formatOutput(selectedSlots, {
-      formatWeekday,
-      formatTime,
-      formatDate: mode === 'week' ? formatDate : undefined,
-      weekDates,
-      prefix: t('output.prefix'),
-      localTimezone,
-      targetTimezone,
-      interval,
-      appendLink: linkUrl,
-    })
+    const text = mode === 'week'
+      ? formatOutputMultiWeek(weekSelections, {
+          formatWeekday,
+          formatTime,
+          formatDate,
+          weekLabel: formatWeekLabel,
+          prefix: t('output.prefix'),
+          localTimezone,
+          targetTimezone,
+          interval,
+          appendLink: linkUrl,
+        })
+      : formatOutput(currentWeekSlots, {
+          formatWeekday,
+          formatTime,
+          prefix: t('output.prefix'),
+          localTimezone,
+          targetTimezone,
+          interval,
+          appendLink: linkUrl,
+        })
 
     await navigator.clipboard.writeText(text)
     setCopied(true)
