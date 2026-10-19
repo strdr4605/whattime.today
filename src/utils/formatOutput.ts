@@ -1,14 +1,16 @@
-import type { SlotKey, WeekDay, Hour, Minute, Interval } from '../types'
+import type { SlotKey, WeekDay, Hour, Minute, Interval, WeekSelection } from '../types'
 import { WEEKDAYS, parseSlotKey } from '../types'
 import { convertHour, getTimezoneAbbr } from './timezoneUtils'
-import { addDays } from './dateUtils'
+import { addDays, getWeekDates, parseLocalDate } from './dateUtils'
 
 type FormatOptions = {
   formatWeekday: (weekday: WeekDay) => string
   formatTime: (hour: Hour, minute: Minute) => string
   formatDate?: (date: Date) => string
   weekDates?: Date[]
-  prefix: string
+  prefix?: string
+  header?: string
+  weekLabel?: (monday: Date) => string
   localTimezone?: string
   targetTimezone?: string
   interval: Interval
@@ -25,7 +27,7 @@ type ConvertedSlot = {
 type TimeSlot = { hour: Hour; minute: Minute }
 
 export function formatOutput(slots: Set<SlotKey>, options: FormatOptions): string {
-  const { formatWeekday, formatTime, formatDate, weekDates, prefix, localTimezone, targetTimezone, interval, appendLink } = options
+  const { formatWeekday, formatTime, formatDate, weekDates, prefix, header, localTimezone, targetTimezone, interval, appendLink } = options
 
   if (slots.size === 0) return ''
 
@@ -43,7 +45,7 @@ export function formatOutput(slots: Set<SlotKey>, options: FormatOptions): strin
     byDay.get(weekday)!.push({ hour, minute })
   })
 
-  const lines: string[] = [prefix]
+  const lines: string[] = buildHeader(prefix, header)
 
   WEEKDAYS.forEach((weekday, idx) => {
     const timeSlots = byDay.get(weekday)
@@ -73,7 +75,7 @@ function formatWithTimezoneConversion(
   options: FormatOptions,
   tzAbbr: string
 ): string {
-  const { formatWeekday, formatTime, formatDate, weekDates, prefix, localTimezone, targetTimezone, interval, appendLink } = options
+  const { formatWeekday, formatTime, formatDate, weekDates, prefix, header, localTimezone, targetTimezone, interval, appendLink } = options
 
   const convertedSlots: ConvertedSlot[] = []
 
@@ -105,7 +107,7 @@ function formatWithTimezoneConversion(
 
   const sortedDates = Array.from(byDate.entries()).sort(([a], [b]) => a.localeCompare(b))
 
-  const lines: string[] = [prefix]
+  const lines: string[] = buildHeader(prefix, header)
 
   sortedDates.forEach(([, { date, weekday, timeSlots }]) => {
     timeSlots.sort((a, b) => a.hour * 60 + a.minute - (b.hour * 60 + b.minute))
@@ -130,6 +132,57 @@ function formatWithTimezoneConversion(
 function getWeekdayFromDate(date: Date): WeekDay {
   const weekdays: WeekDay[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
   return weekdays[date.getDay()]
+}
+
+function buildHeader(prefix?: string, header?: string): string[] {
+  const lines: string[] = []
+  if (prefix) lines.push(prefix)
+  if (header) lines.push(header)
+  return lines
+}
+
+export function formatOutputMultiWeek(
+  weeks: WeekSelection[],
+  options: Omit<FormatOptions, 'weekDates'>
+): string {
+  const { prefix, header, weekLabel, appendLink, ...rest } = options
+  const sortedWeeks = [...weeks].sort((a, b) => a.weekStart.localeCompare(b.weekStart))
+  const filledWeeks = sortedWeeks.filter((week) => week.slots.length > 0)
+
+  if (filledWeeks.length === 0) return ''
+
+  // One week keeps the plain output, several weeks get a labelled block each.
+  if (filledWeeks.length === 1) {
+    const monday = parseLocalDate(filledWeeks[0].weekStart)
+    return formatOutput(new Set(filledWeeks[0].slots), {
+      ...rest,
+      prefix,
+      header: undefined,
+      weekDates: getWeekDates(monday),
+      appendLink,
+    })
+  }
+
+  const blocks: string[] = []
+  for (const week of filledWeeks) {
+    const monday = parseLocalDate(week.weekStart)
+    const label = weekLabel ? weekLabel(monday) : undefined
+    const block = formatOutput(new Set(week.slots), {
+      ...rest,
+      prefix: undefined,
+      header: label ? `${label}:` : header,
+      weekDates: getWeekDates(monday),
+      appendLink: undefined,
+    })
+    if (block) blocks.push(block)
+  }
+
+  const sections = [prefix, ...blocks].filter((section): section is string => Boolean(section))
+  let result = sections.join('\n\n')
+  if (appendLink) {
+    result += `\n\n${appendLink}`
+  }
+  return result
 }
 
 function mergeTimeSlots(slots: TimeSlot[], interval: Interval): Array<[TimeSlot, TimeSlot]> {

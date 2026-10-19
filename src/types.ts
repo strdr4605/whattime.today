@@ -36,6 +36,18 @@ export const MINUTES: Minute[] = [0, 30]
 
 export type Slot = { hour: Hour; minute: Minute }
 
+export type WeekSelection = {
+  weekStart: string; // ISO date string (YYYY-MM-DD) of the Monday
+  slots: SlotKey[]
+}
+
+export function weekSelectionKey(weekStart: Date): string {
+  const y = weekStart.getFullYear()
+  const m = String(weekStart.getMonth() + 1).padStart(2, '0')
+  const d = String(weekStart.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
 export const WEEKDAYS: WeekDay[] = [
   'monday',
   'tuesday',
@@ -58,6 +70,17 @@ export function parseSlotKey(key: SlotKey): { weekday: WeekDay; hour: Hour; minu
   const hour = parseInt(parts[1], 10) as Hour
   const minute = parseInt(parts[2], 10) as Minute
   return { weekday, hour, minute }
+}
+
+export function isValidSlotKey(value: unknown): value is SlotKey {
+  if (typeof value !== 'string') return false
+  const parts = value.split('-')
+  if (parts.length !== 3) return false
+  return (
+    WEEKDAYS.includes(parts[0] as WeekDay) &&
+    HOURS.includes(Number(parts[1]) as Hour) &&
+    MINUTES.includes(Number(parts[2]) as Minute)
+  )
 }
 
 export function getSlots(interval: Interval): Slot[] {
